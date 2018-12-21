@@ -15,4 +15,6 @@ class Check(Resource):
 api.add_resource(Caption,"/captions/<string:id>")
 api.add_resource(Check,"/")
 
-app.run(debug=True)
+
+def run():
+    app.run(debug=True)
