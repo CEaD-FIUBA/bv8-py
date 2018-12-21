@@ -16,5 +16,4 @@ api.add_resource(Caption,"/captions/<string:id>")
 api.add_resource(Check,"/")
 
 
-def run():
-    app.run(debug=True)
+app.run(debug=True)
