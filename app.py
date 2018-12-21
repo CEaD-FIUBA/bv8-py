@@ -1,6 +1,6 @@
 from flask import Flask
 from flask_restful import Api,Resource,reqparse
-
+import os
 app = Flask(__name__)
 api = Api(app)
 
@@ -15,5 +15,5 @@ class Check(Resource):
 api.add_resource(Caption,"/captions/<string:id>")
 api.add_resource(Check,"/")
 
-
+print os.environ['PORT']
 app.run(debug=True)
