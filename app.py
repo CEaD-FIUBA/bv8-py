@@ -16,4 +16,4 @@ api.add_resource(Caption,"/captions/<string:id>")
 api.add_resource(Check,"/")
 
 print(os.environ['PORT'])
-app.run(debug=True)
+app.run(debug=True,port=os.environ['PORT'])
