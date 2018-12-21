@@ -1,13 +1,18 @@
-from flask import flask
+from flask import Flask
 from flask_restful import Api,Resource,reqparse
 
-app = Flash(__name__)
+app = Flask(__name__)
 api = Api(app)
 
 class Caption(Resource):
     def get(self,id):
-        return 'Hello',200
+        return 'Download caption by {}'.format(id),200
 
-api.add_resource(Caption,"captions/<string:id>")
+class Check(Resource):
+    def get(self):
+        return 'OK',200
+
+api.add_resource(Caption,"/captions/<string:id>")
+api.add_resource(Check,"/")
 
 app.run(debug=True)
