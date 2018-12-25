@@ -58,6 +58,7 @@ def get_authenticated_service(args):
   credentials = storage.get()
 
   if credentials is None or credentials.invalid:
+    print(args)
     credentials = run_flow(flow, storage, args)
 
   # Trusted testers can download this discovery document from the developers page
@@ -135,7 +136,6 @@ def download_caption(youtube, caption_id, tfmt):
   ).execute()
 
   #print "%s" % (subtitle)
-  print_caption(subtitle)
 
 def print_caption(subtitle):
     print("caption")
@@ -171,6 +171,8 @@ if __name__ == "__main__":
 
 
   args = argparser.parse_args()
+
+  print(type(args))
 
   if (args.action in ('upload', 'list', 'all')):
     if not args.videoid:

@@ -1,3 +1,6 @@
 Flask
 gunicorn
 flask_restful
+httplib2
+google-api-python-client
+oauth2client
