@@ -67,90 +67,47 @@ def get_authenticated_service(args):
     doc = f.read()
     return build_from_document(doc, http=credentials.authorize(httplib2.Http()))
 
-
-# Call the API's captions.list method to list the existing caption tracks.
-def list_captions(youtube, video_id):
-  results = youtube.captions().list(
-    part="snippet",
-    videoId=video_id
-  ).execute()
-
-  for item in results["items"]:
-    id = item["id"]
-    name = item["snippet"]["name"]
-    language = item["snippet"]["language"]
-    print "Caption track '%s(%s)' in '%s' language." % (name, id, language)
-
-  return results["items"]
-
-
-# Call the API's captions.insert method to upload a caption track in draft status.
-def upload_caption(youtube, video_id, language, name, file):
-  insert_result = youtube.captions().insert(
-    part="snippet",
-    body=dict(
-      snippet=dict(
-        videoId=video_id,
-        language=language,
-        name=name,
-        isDraft=True
-      )
-    ),
-    media_body=file
-  ).execute()
-
-  id = insert_result["id"]
-  name = insert_result["snippet"]["name"]
-  language = insert_result["snippet"]["language"]
-  status = insert_result["snippet"]["status"]
-  print "Uploaded caption track '%s(%s) in '%s' language, '%s' status." % (name,
-      id, language, status)
-
-
-# Call the API's captions.update method to update an existing caption track's draft status
-# and publish it. If a new binary file is present, update the track with the file as well.
-def update_caption(youtube, caption_id, file):
-  update_result = youtube.captions().update(
-    part="snippet",
-    body=dict(
-      id=caption_id,
-      snippet=dict(
-        isDraft=False
-      )
-    ),
-    media_body=file
-  ).execute()
-
-  name = update_result["snippet"]["name"]
-  isDraft = update_result["snippet"]["isDraft"]
-  print "Updated caption track '%s' draft status to be: '%s'" % (name, isDraft)
-  if file:
-    print "and updated the track with the new uploaded file."
-
-
 # Call the API's captions.download method to download an existing caption track.
 def download_caption(youtube, caption_id, tfmt):
   subtitle = youtube.captions().download(
     id=caption_id,
-    tfmt='vtt'
+    tfmt=tfmt
   ).execute()
 
   #print "%s" % (subtitle)
+  print_captions(subtitle)
+  return process_captions(subtitle)
 
-def print_caption(subtitle):
+
+def print_captions(subtitle):
+  array = subtitle.split("\n")
+  for idx,val in enumerate(array):
+    print(idx,val)
+
+def process_captions(subtitle):
     print("caption")
+    list_to_return = []
     array = subtitle.split("\n")
-    for str in array:
-        print(str+"<->")
+    print("len",len(array))
+    for i in range(0,len(array) - 2,4):
+      print(" i: %d",i)
+      time = process_time_line(array[i + 1])
+      caption = array[i +2]
+      list_to_return.append({
+        'time':time,
+        'caption':caption
+      })
+    return list_to_return
 
-
-# Call the API's captions.delete method to delete an existing caption track.
-def delete_caption(youtube, caption_id):
-  youtube.captions().delete(
-    id=caption_id
-  ).execute()
-
-  print "caption track '%s' deleted succesfully" % (caption_id)
+def process_time_line(str):
+  print('process_time_line %s',str)
+  time_line_splited = str.split("-->")
+  time = time_line_splited[0]
+  time_splited = time.split(":")
+  hour = int(time_splited[0])
+  minutes = int(time_splited[1])
+  seconds = int(time_splited[2].split(',')[0])
+  return hour*60*60 + minutes*60 + seconds
 
 
 if __name__ == "__main__":

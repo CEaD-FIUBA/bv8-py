@@ -20,8 +20,10 @@ args.videoid=None
 class Caption(Resource):
     def get(self,id):
         youtube = get_authenticated_service(args)
-        download_caption(youtube,id,'vtt')
-        return 'Download caption by {}'.format(id),200
+        return {
+            'id':id,
+            'captions':download_caption(youtube,id,'srt')
+        }
 
 class Check(Resource):
     def get(self):
