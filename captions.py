@@ -51,6 +51,7 @@ https://developers.google.com/api-client-library/python/guide/aaa_client_secrets
 
 # Authorize the request and store authorization credentials.
 def get_authenticated_service(args):
+  print("Authenticate service")
   flow = flow_from_clientsecrets(CLIENT_SECRETS_FILE, scope=YOUTUBE_READ_WRITE_SSL_SCOPE,
     message=MISSING_CLIENT_SECRETS_MESSAGE)
 
@@ -69,6 +70,7 @@ def get_authenticated_service(args):
 
 # Call the API's captions.download method to download an existing caption track.
 def download_caption(youtube, caption_id, tfmt):
+  print("Download caption")
   subtitle = youtube.captions().download(
     id=caption_id,
     tfmt=tfmt
