@@ -10,3 +10,14 @@ REQUEST
 GET https://bbv8-py.herokuapp.com/captions/:id
 
 RESPONSE
+
+{
+  "captions":[
+    {
+      "caption":"xx",
+      "time:int
+    }
+  ],
+  id:"xxx"
+}
+
