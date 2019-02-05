@@ -32,6 +32,12 @@ class Check(Resource):
 api.add_resource(Caption,"/captions/<string:id>")
 api.add_resource(Check,"/")
 
+
+@app.after_request
+def add_header(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
+
 PORT = '8081' if environ.get('PORT') is None else environ['PORT']
 print(PORT)
 
