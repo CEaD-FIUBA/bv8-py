@@ -93,7 +93,7 @@ def process_captions(subtitle):
     print("len",len(array))
     for i in range(0,len(array) - 2,4):
       print(" i: %d",i)
-      time = process_time_line(array[i + 1])
+      time = calculate_time_in_seconds(array[i + 1])
       caption = array[i +2]
       list_to_return.append({
         'time':time,
@@ -101,8 +101,8 @@ def process_captions(subtitle):
       })
     return list_to_return
 
-def process_time_line(str):
-  print('process_time_line %s',str)
+def calculate_time_in_seconds(str):
+  print('calculate_time_in_seconds %s',str)
   time_line_splited = str.split("-->")
   time = time_line_splited[0]
   time_splited = time.split(":")
